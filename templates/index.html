@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music File Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-light: #3b82f6;
+      --bg: #f8fafc;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --border: #e2e8f0;
+      --player-bg: rgba(255, 255, 255, 0.98);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      user-select: none;
+      padding-bottom: 80px;
+    }
+    
+    .app {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+    
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .search {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s;
+      background: white;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    
+    .search:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      background: rgba(255, 255, 255, 0.5);
+      /* semi-transparent background */
+      backdrop-filter: blur(12px);
+      /* glassy blur */
+      -webkit-backdrop-filter: blur(12px);
+      /* Safari support */
+      border-radius: 0.75rem;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      scrollbar-width: none;
+    }
+    
+    
+    .breadcrumb::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .breadcrumb span {
+      color: var(--primary);
+      cursor: pointer;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      transition: all 0.2s;
+      white-space: nowrap;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    
+    .breadcrumb span:hover {
+      background: rgba(37, 99, 235, 0.1);
+    }
+    
+    .breadcrumb .separator {
+      color: var(--text-light);
+      opacity: 0.6;
+      display: flex;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+    
+    .content {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.25rem;
+    }
+    
+    .item {
+      background: white;
+      padding: 1.5rem 1.25rem;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      border-color: var(--primary-light);
+    }
+    
+    .item-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+      transition: transform 0.3s;
+      color: var(--primary);
+    }
+    
+    .item:hover .item-icon {
+      transform: scale(1.1);
+    }
+    
+    .item-name {
+      font-size: 0.95rem;
+      word-break: break-word;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    
+    .player {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.5);
+      /* slightly lower opacity for better blur */
+      backdrop-filter: blur(12px);
+      /* this is the key for a stronger blur effect */
+      -webkit-backdrop-filter: blur(12px);
+      /* Safari support */
+      padding: 0.75rem 1.5rem;
+      box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06);
+      transform: translateY(100%);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    
+    .player.active {
+      transform: translateY(0);
+    }
+    
+    .player.minimized {
+      transform: translateY(calc(100% - 60px));
+      padding: 0.5rem 1.5rem;
+    }
+    
+    .player.minimized .player-content {
+      display: none;
+    }
+    
+    .player.fullscreen {
+      top: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      padding: 1.5rem;
+      transform: none;
+      color: black;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border-top: none;
+      gap: 1.5rem;
+    }
+    
+    .player-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .now-playing {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .player.fullscreen .now-playing {
+      color: black;
+      opacity: 0.9;
+    }
+    
+    #playing-name {
+      font-weight: 500;
+      color: var(--primary);
+    }
+    
+    .player.fullscreen #playing-name {
+      color: red;
+      
+    }
+    
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .player-btn {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+    }
+    
+    .player-btn:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--text);
+    }
+    
+    .player.fullscreen .player-btn {
+      color: black;
+      
+    }
+    
+    .player.fullscreen .player-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+    }
+    
+    .audio-container {
+      width: 100%;
+    }
+    
+    audio {
+      width: 100%;
+      border-radius: 0.5rem;
+    }
+    
+    .player.fullscreen audio {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 0.75rem;
+    }
+    
+    
+    .player.fullscreen {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .player.fullscreen::-webkit-slider-thumb {
+      background: white;
+    }
+    
+    .fullscreen-content {
+      display: none;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .player.fullscreen .fullscreen-content {
+      display: flex;
+      flex: 1;
+    }
+    
+    .fullscreen-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    
+    .track-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .fullscreen-title {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    
+    .fullscreen-subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+    
+    .metadata-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      backdrop-filter: blur(10px);
+    }
+    
+    .metadata-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    
+    .metadata-label {
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+    
+    .metadata-value {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+      word-break: break-word;
+    }
+    
+    @media (max-width: 768px) {
+      .content {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+      
+      .fullscreen-title {
+        font-size: 1.6rem;
+      }
+      
+      .fullscreen-subtitle {
+        font-size: 1rem;
+      }
+      
+      .metadata-container {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .app {
+        padding: 1rem;
+      }
+      
+      .item {
+        padding: 1.25rem 1rem;
+      }
+      
+      .player-controls {
+        gap: 0.5rem;
+      }
+      
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <div class="header">
+      <input type="text" class="search" placeholder="Search files...">
+    </div>
+    <div class="breadcrumb" id="breadcrumb"></div>
+    <div class="content" id="content"></div>
+  </div>
+  
+  <div class="player minimized" id="player" onclick="toggleMinimize()">
+    <div class="player-header">
+      <div class="now-playing"><span id="playing-name">No track selected</span></div>
+      <div class="player-controls">
+        <button class="player-btn" onclick="event.stopPropagation(); closePlayer()">✕</button>
+      </div>
+    </div>
+    
+    <div class="player-content">
+      <div class="audio-container">
+        <audio controls id="audio"></audio>
+      </div>
+    </div>
+    
+    <div class="metadata-container" id="metadata-container">
+      <div class="metadata-item">
+        <span class="metadata-label">Title</span>
+        <span class="metadata-value" id="meta-title">-</span>
+      </div>
+      <div class="metadata-item">
+        <span class="metadata-label">Artist</span>
+        <span class="metadata-value" id="meta-artist">-</span>
+      </div>
+      <div class="metadata-item">
+        <span class="metadata-label">Album</span>
+        <span class="metadata-value" id="meta-album">-</span>
+      </div>
+      <div class="metadata-item">
+        <span class="metadata-label">Duration</span>
+        <span class="metadata-value" id="meta-duration">-</span>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Add these new functions
+    function toggleMinimize() {
+      player.classList.toggle('minimized');
+    }
+    
+    let currentPath = '';
+    const search = document.querySelector('.search');
+    const content = document.getElementById('content');
+    const breadcrumb = document.getElementById('breadcrumb');
+    const player = document.getElementById('player');
+    const audio = document.getElementById('audio');
+    const playingName = document.getElementById('playing-name');
+    const metaTitle = document.getElementById('meta-title');
+    const metaArtist = document.getElementById('meta-artist');
+    const metaAlbum = document.getElementById('meta-album');
+    const metaDuration = document.getElementById('meta-duration');
+
+    async function loadContent(path = '/download') {
+      try {
+        const res = await fetch(`/api${path}`);
+        const data = await res.json();
+        currentPath = path;
+        updateBreadcrumb();
+        renderContent(data.data);
+      } catch (err) {
+        console.error('Error loading content:', err);
+      }
+    }
+
+    function renderContent(data) {
+      content.innerHTML = '';
+
+      if (currentPath !== '/download') {
+        addItem('..', '📁', () => {
+          const parentPath = currentPath.split('/').slice(0, -1).join('/') || '/download';
+          loadContent(parentPath);
+        });
+      }
+
+      Object.entries(data).forEach(([name, path]) => {
+        if (name === 'Back to Parent Directory') return;
+        const isMusic = path.endsWith('.html');
+        addItem(name, isMusic ? '🎵' : '📁', () => {
+          isMusic ? playMusic(path, name) : loadContent(path);
+        });
+      });
+    }
+
+    function addItem(name, icon, onClick) {
+      const item = document.createElement('div');
+      item.className = 'item';
+      item.innerHTML = `
+        <div class="item-icon">${icon}</div>
+        <div class="item-name">${name.replace(/\s*\(music\.com\.bd\)\s*/g, '')}</div>
+        
+      `;
+      item.onclick = onClick;
+      content.appendChild(item);
+    }
+
+    function updateBreadcrumb() {
+      const parts = currentPath.split('/').filter(Boolean);
+      let path = '';
+      breadcrumb.innerHTML = `
+        <span onclick="loadContent('/download')">Home</span>
+        ${parts
+          .map((part, i) => {
+            path += `/${part}`;
+            if (['browse', 'download'].includes(part)) return '';
+            const isLast = i === parts.length - 1;
+            return `
+              <span class="separator">/</span>
+              <span class="${isLast ? 'current' : ''}" ${!isLast ? `onclick="loadContent('${path}')"` : ''}>${part}</span>
+            `;
+          })
+          .join('')}
+      `;
+    }
+
+
+    async function playMusic(path, name) {
+      try {
+        const res = await fetch(`/api${path}`);
+        const data = await res.json();
+        if (data.data.stream_url) {
+          player.classList.add('active');
+          audio.src = data.data.stream_url;
+          audio.play();
+          if (data.data.metadata) {
+            const meta = data.data.metadata;
+            metaTitle.textContent = meta.Title || displayName;
+            playingName.textContent = meta.Title
+            metaArtist.textContent = meta.Artist || 'Unknown';
+            metaAlbum.textContent = meta.Album || 'Unknown';
+            metaDuration.textContent = meta['Play Time'] || '--:--';
+          } else {
+            metaTitle.textContent = displayName;
+            playingName.textContent = name.replace(/\.mp3$|\s*\(music\.com\.bd\)\s*/gi, '').trim();
+            metaArtist.textContent = 'Unknown';
+            metaAlbum.textContent = 'Unknown';
+            metaDuration.textContent = '--:--';
+          }
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.metadata = new MediaMetadata({
+    title: metaTitle.textContent,
+    artist: metaArtist.textContent,
+    album: metaAlbum.textContent});
+
+  navigator.mediaSession.setActionHandler('play', () => audio.play());
+  navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+  
+  navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+  audio.currentTime = Math.max(audio.currentTime - (details.seekOffset || 10), 0);
+  });
+  
+  navigator.mediaSession.setActionHandler('seekforward', (details) => {
+  audio.currentTime = Math.min(audio.currentTime + (details.seekOffset || 10), audio.duration);
+  });
+}
+          
+        }
+      } catch (err) {
+        console.error('Error playing music:', err);
+      }
+    }
+
+    function closePlayer() {
+      audio.pause();
+      player.classList.remove('active');
+      player.classList.remove('minimized');
+    }
+
+    search.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      document.querySelectorAll('.item').forEach(item => {
+        const name = item.querySelector('.item-name').textContent.toLowerCase();
+        item.style.display = name.includes(term) ? '' : 'none';
+      });
+    });
+
+    // Initial load
+    loadContent();
+  </script>
+</body>
+
+</html>
