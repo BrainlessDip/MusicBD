@@ -1,0 +1,23 @@
+:root {
+    --primary: #2563eb;
+    --primary-light: #3b82f6;
+    --bg: #f8fafc;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --player-bg: rgba(255, 255, 255, 0.98);
+}
+
+/* global reset */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+html {
+    font-size: 62.5%;
+}

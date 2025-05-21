@@ -1,0 +1,7 @@
+/* this file is for small UI pieces which doesn't have many child but just itself */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}

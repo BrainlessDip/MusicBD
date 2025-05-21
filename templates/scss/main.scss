@@ -1,0 +1,9 @@
+@use "ui/breadcrumb.scss";
+@use "ui/search.scss";
+body {
+  font-family: "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  user-select: none;
+  padding-bottom: 80px;
+}

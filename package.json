@@ -1,0 +1,23 @@
+{
+  "name": "musicbd",
+  "version": "1.0.0",
+  "description": "ong",
+  "homepage": "https://github.com/brainlessdip/musicbd#readme",
+  "bugs": {
+    "url": "https://github.com/brainlessdip/musicbd/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brainlessdip/musicbd.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "watch": "sass --watch templates/scss/main.scss templates/css/style.css"
+  },
+  "devDependencies": {
+    "sass": "^1.89.0"
+  }
+}
