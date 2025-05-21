@@ -1,0 +1,38 @@
+@use "../abstracts/mixing" as *;
+.metadata {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  backdrop-filter: blur(10px);
+
+  @include respond(tab-port) {
+    &-container {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &-label {
+    font-size: 1rem;
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+
+  &-value {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--text);
+    word-break: break-word;
+  }
+}

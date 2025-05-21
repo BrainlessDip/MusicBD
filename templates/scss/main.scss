@@ -1,5 +1,11 @@
-@use "ui/breadcrumb.scss";
-@use "ui/search.scss";
+@use "abstracts/mixing" as *;
+@use "abstracts/index" as *;
+@use "ui/breadcrumb";
+@use "ui/search";
+@use "ui/item";
+@use "player/player";
+@use "player/audio";
+@use "player/metadata";
 body {
   font-family: "Inter", sans-serif;
   background: var(--bg);

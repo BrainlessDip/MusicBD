@@ -1,0 +1,46 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.75rem 2.25rem;
+  background: rgba(255, 255, 255, 0.5);
+  /* semi-transparent background */
+  backdrop-filter: blur(12px);
+  /* glassy blur */
+  -webkit-backdrop-filter: blur(12px);
+  /* Safari support */
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  & span {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--primary);
+    white-space: nowrap;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    transition: all 0.2s;
+  }
+
+  & span:hover {
+    background: rgba(37, 99, 235, 0.1);
+  }
+
+  & .separator {
+    color: var(--text-light);
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+  }
+}

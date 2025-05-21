@@ -1,0 +1,39 @@
+.item {
+  font-size: 1.4rem;
+  background: white;
+  padding: 1.5rem 1.25rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-color: var(--primary-light);
+  }
+
+  &-icon {
+    font-size: 3rem;
+    margin-bottom: 0.75rem;
+    transition: transform 0.3s;
+    color: var(--primary);
+  }
+
+  &:hover &-icon {
+    transform: scale(1.1);
+  }
+
+  &-name {
+    font-size: 1.35rem;
+    word-break: break-word;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+  }
+}

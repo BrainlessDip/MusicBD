@@ -1,7 +1,41 @@
 /* this file is for small UI pieces which doesn't have many child but just itself */
+.app {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+
 .header {
     display: flex;
     align-items: center;
     gap: 1rem;
     margin-bottom: 1.5rem;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.25rem;
+}
+
+@media only screen and (min-width: 112.5em) {
+    .content {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .app {
+        padding: 1rem;
+    }
+
+    .item {
+        padding: 1.25rem 1rem;
+    }
+
+    .player-controls {
+        gap: 0.5rem;
+    }
+
 }

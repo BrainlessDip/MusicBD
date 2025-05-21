@@ -15,6 +15,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
+    "build": "sass templates/scss/main.scss templates/css/style.css",
     "watch": "sass --watch templates/scss/main.scss templates/css/style.css"
   },
   "devDependencies": {

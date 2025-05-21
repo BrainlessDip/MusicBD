@@ -16,13 +16,13 @@
       --border: #e2e8f0;
       --player-bg: rgba(255, 255, 255, 0.98);
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     body {
       font-family: 'Inter', sans-serif;
       background: var(--bg);
@@ -30,20 +30,20 @@
       user-select: none;
       padding-bottom: 80px;
     }
-    
+
     .app {
       max-width: 1200px;
       margin: 0 auto;
       padding: 1.5rem;
     }
-    
+
     .header {
       display: flex;
       align-items: center;
       gap: 1rem;
       margin-bottom: 1.5rem;
     }
-    
+
     .search {
       flex: 1;
       padding: 0.75rem 1rem;
@@ -55,12 +55,12 @@
       background: white;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
-    
+
     .search:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     }
-    
+
     .breadcrumb {
       display: flex;
       align-items: center;
@@ -81,12 +81,12 @@
       z-index: 100;
       scrollbar-width: none;
     }
-    
-    
+
+
     .breadcrumb::-webkit-scrollbar {
       display: none;
     }
-    
+
     .breadcrumb span {
       color: var(--primary);
       cursor: pointer;
@@ -97,11 +97,11 @@
       font-weight: 500;
       font-size: 0.95rem;
     }
-    
+
     .breadcrumb span:hover {
       background: rgba(37, 99, 235, 0.1);
     }
-    
+
     .breadcrumb .separator {
       color: var(--text-light);
       opacity: 0.6;
@@ -109,13 +109,13 @@
       align-items: center;
       font-size: 0.9rem;
     }
-    
+
     .content {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 1.25rem;
     }
-    
+
     .item {
       background: white;
       padding: 1.5rem 1.25rem;
@@ -129,24 +129,24 @@
       align-items: center;
       text-align: center;
     }
-    
+
     .item:hover {
       transform: translateY(-3px);
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       border-color: var(--primary-light);
     }
-    
+
     .item-icon {
       font-size: 2.5rem;
       margin-bottom: 0.75rem;
       transition: transform 0.3s;
       color: var(--primary);
     }
-    
+
     .item:hover .item-icon {
       transform: scale(1.1);
     }
-    
+
     .item-name {
       font-size: 0.95rem;
       word-break: break-word;
@@ -154,7 +154,7 @@
       color: var(--text);
       line-height: 1.4;
     }
-    
+
     .player {
       position: fixed;
       bottom: 0;
@@ -176,21 +176,21 @@
       flex-direction: column;
       gap: 0.75rem;
     }
-    
-    
+
+
     .player.active {
       transform: translateY(0);
     }
-    
+
     .player.minimized {
       transform: translateY(calc(100% - 60px));
       padding: 0.5rem 1.5rem;
     }
-    
+
     .player.minimized .player-content {
       display: none;
     }
-    
+
     .player.fullscreen {
       top: 0;
       height: 100vh;
@@ -202,13 +202,13 @@
       border-top: none;
       gap: 1.5rem;
     }
-    
+
     .player-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    
+
     .now-playing {
       font-weight: 600;
       font-size: 0.95rem;
@@ -217,28 +217,28 @@
       align-items: center;
       gap: 0.5rem;
     }
-    
+
     .player.fullscreen .now-playing {
       color: black;
       opacity: 0.9;
     }
-    
+
     #playing-name {
       font-weight: 500;
       color: var(--primary);
     }
-    
+
     .player.fullscreen #playing-name {
       color: red;
-      
+
     }
-    
+
     .player-controls {
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
-    
+
     .player-btn {
       background: none;
       border: none;
@@ -254,45 +254,45 @@
       width: 36px;
       height: 36px;
     }
-    
+
     .player-btn:hover {
       background: rgba(0, 0, 0, 0.05);
       color: var(--text);
     }
-    
+
     .player.fullscreen .player-btn {
       color: black;
-      
+
     }
-    
+
     .player.fullscreen .player-btn:hover {
       background: rgba(255, 255, 255, 0.15);
       color: white;
     }
-    
+
     .audio-container {
       width: 100%;
     }
-    
+
     audio {
       width: 100%;
       border-radius: 0.5rem;
     }
-    
+
     .player.fullscreen audio {
       background: rgba(255, 255, 255, 0.1);
       border-radius: 0.75rem;
     }
-    
-    
+
+
     .player.fullscreen {
       background: rgba(255, 255, 255, 0.2);
     }
-    
+
     .player.fullscreen::-webkit-slider-thumb {
       background: white;
     }
-    
+
     .fullscreen-content {
       display: none;
       width: 100%;
@@ -301,35 +301,35 @@
       flex-direction: column;
       gap: 2rem;
     }
-    
+
     .player.fullscreen .fullscreen-content {
       display: flex;
       flex: 1;
     }
-    
+
     .fullscreen-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
     }
-    
+
     .track-info {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
     }
-    
+
     .fullscreen-title {
       font-size: 2rem;
       font-weight: 700;
       line-height: 1.2;
     }
-    
+
     .fullscreen-subtitle {
       font-size: 1.1rem;
       opacity: 0.9;
     }
-    
+
     .metadata-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -341,56 +341,54 @@
       border-radius: 0.75rem;
       backdrop-filter: blur(10px);
     }
-    
+
     .metadata-item {
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
     }
-    
+
     .metadata-label {
       font-size: 0.85rem;
       opacity: 0.8;
     }
-    
+
     .metadata-value {
       font-size: 1rem;
       font-weight: 500;
       color: var(--text);
       word-break: break-word;
     }
-    
+
     @media (max-width: 768px) {
       .content {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
       }
-      
+
       .fullscreen-title {
         font-size: 1.6rem;
       }
-      
+
       .fullscreen-subtitle {
         font-size: 1rem;
       }
-      
-      .metadata-container {
-        grid-template-columns: 1fr;
-      }
+
+
     }
-    
+
     @media (max-width: 480px) {
       .app {
         padding: 1rem;
       }
-      
+
       .item {
         padding: 1.25rem 1rem;
       }
-      
+
       .player-controls {
         gap: 0.5rem;
       }
-      
+
     }
   </style>
 </head>
@@ -403,7 +401,7 @@
     <div class="breadcrumb" id="breadcrumb"></div>
     <div class="content" id="content"></div>
   </div>
-  
+
   <div class="player minimized" id="player" onclick="toggleMinimize()">
     <div class="player-header">
       <div class="now-playing"><span id="playing-name">No track selected</span></div>
@@ -411,13 +409,13 @@
         <button class="player-btn" onclick="event.stopPropagation(); closePlayer()">✕</button>
       </div>
     </div>
-    
+
     <div class="player-content">
       <div class="audio-container">
         <audio controls id="audio"></audio>
       </div>
     </div>
-    
+
     <div class="metadata-container" id="metadata-container">
       <div class="metadata-item">
         <span class="metadata-label">Title</span>
@@ -437,13 +435,13 @@
       </div>
     </div>
   </div>
-  
+
   <script>
     // Add these new functions
     function toggleMinimize() {
       player.classList.toggle('minimized');
     }
-    
+
     let currentPath = '';
     const search = document.querySelector('.search');
     const content = document.getElementById('content');

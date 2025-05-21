@@ -1,0 +1,128 @@
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.5);
+  /* slightly lower opacity for better blur */
+  backdrop-filter: blur(12px);
+  /* this is the key for a stronger blur effect */
+  -webkit-backdrop-filter: blur(12px);
+  /* Safari support */
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 -2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(100%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  &.active {
+    transform: translateY(0);
+  }
+
+  &.minimized {
+    transform: translateY(calc(100% - 60px));
+    padding: 0.5rem 1.5rem;
+  }
+
+  &.minimized &-content {
+    display: none;
+  }
+
+  &.fullscreen {
+    top: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    padding: 1.5rem;
+    transform: none;
+    color: black;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-top: none;
+    gap: 1.5rem;
+  }
+
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .now-playing {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &.fullscreen .now-playing {
+    color: black;
+    opacity: 0.9;
+  }
+
+  #playing-name {
+    font-weight: 500;
+    color: var(--primary);
+  }
+
+  &.fullscreen #playing-name {
+    color: red;
+  }
+
+  &-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &-btn {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.6rem;
+    height: 3.6rem;
+  }
+
+  &-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text);
+  }
+
+  &.fullscreen &-btn {
+    color: black;
+  }
+
+  &.fullscreen &-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+  }
+
+  &.fullscreen audio {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+  }
+
+  &.fullscreen {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  &.fullscreen::-webkit-slider-thumb {
+    background: white;
+  }
+  &.fullscreen .fullscreen-content {
+    display: flex;
+    flex: 1;
+  }
+}
