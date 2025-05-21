@@ -5,7 +5,7 @@ from urllib.parse import urlparse, unquote
 
 async def scrape_list_group_items(url: str):
     soup = await fetch_content(url)
-    links =  [(a.text.strip().split('\n')[0], unquote(urlparse(a["href"]).path.rstrip('/'))) for a in soup.find_all("a", class_="list-group-item")]
+    links = [(a.text.strip().split('\n')[0], unquote(urlparse(a["href"]).path.rstrip('/'))) for a in soup.find_all("a", class_="list-group-item")]
     filtered_links = [link for link in links if not link[1].endswith('.zip.html')]
     sorted_links = sorted(filtered_links, key=lambda x: x[1].endswith(('.mp3.html')))
     return dict(sorted_links)
@@ -30,7 +30,6 @@ async def unified_download(section, letter, name, song_album, song):
         url = f"{base_url}/{letter}"
     else:
         url = base_url
-    print(url)
     if url.endswith('download/browse'):
       url = "https://music.com.bd/download"
     if ".mp3" in url:
